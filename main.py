@@ -1,28 +1,45 @@
 import json
 import urllib.request
-from pathlib import Path
+import base64
 import update
 
-CUR_VER_FILE = Path("current_ver.json")
+# cdn config
+CONFIGS = {
+    "cn_beta": {
+        "cdn": "http://dev-zspns-volccdn.kurogame.com/dev",
+        "appId": "com.kurogame.haru.pioneer",
+        "platform": "android",
+    },
+    "cn_beta(pc)": {
+        "cdn": "http://dev-zspns-volccdn.kurogame.com/dev",
+        "appId": "com.kurogame.haru.pioneer",
+        "platform": "standalone",
+    },
+    "cn": {
+        "cdn": "http://prod-zspns-volccdn.kurogame.com/prod",
+        "appId": "com.kurogame.haru.kuro",
+        "platform": "android",
+    },
+    "cn(pc)": {
+        "cdn": "http://prod-zspns-volccdn.kurogame.com/prod",
+        "appId": "com.kurogame.haru.kuro",
+        "platform": "standalone",
+    },
+}
 
-def read_json(path):
-    if path.exists():
-        return json.loads(path.read_text())
-    return {}
 
-def write_json(path, data):
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+def build_url(cdn, appId, version, platform):
+    return f"{cdn}/client/config/{appId}/{version}/{platform}/config.tab"
 
-def build_url(version):
-    return f"http://dev-zspns-volccdn.kurogame.com/dev/client/config/com.kurogame.haru.pioneer/{version}/android/config.tab"
 
-def fetch_config(version):
-    url = build_url(version)
+def fetch_config(cdn, appId, version, platform):
+    url = build_url(cdn, appId, version, platform)
     try:
         with urllib.request.urlopen(url, timeout=10) as resp:
             return resp.read().decode()
     except:
         return None
+
 
 def parse_document_version(text):
     for line in text.splitlines():
@@ -31,54 +48,72 @@ def parse_document_version(text):
             return parts[2].strip()
     return None
 
-def bump_version(ver: str):
-    """Increment y first, then x"""
-    parts = [int(x) for x in ver.split(".")]
+
+def bump_version(base_ver, cdn, appId, platform):
+    # check for next version update
+    parts = [int(x) for x in base_ver.split(".")]
     x, y, z = parts
-    # bump y
+
+    # bump minor version
     new_y = f"{x}.{y+1}.0"
-    if fetch_config(new_y):
+    if fetch_config(cdn, appId, new_y, platform):
         return new_y
-    # bump x
+
+    # bump major version, either x+1.0.0 or x+1.1.0
     new_x0 = f"{x+1}.0.0"
     new_x1 = f"{x+1}.1.0"
-    if fetch_config(new_x0):
+    if fetch_config(cdn, appId, new_x0, platform):
         return new_x0
-    if fetch_config(new_x1):
+    if fetch_config(cdn, appId, new_x1, platform):
         return new_x1
+
     return None
 
+
 def main():
-    cur = read_json(CUR_VER_FILE)
-    current_ver = cur.get("version", "3.8.0")
-
-    text = fetch_config(current_ver)
-    if not text:
-        bumped = bump_version(current_ver)
-        if not bumped:
-            print("No new version found")
-            return
-        current_ver = bumped
-        write_json(CUR_VER_FILE, {"version": current_ver})
-        text = fetch_config(current_ver)
-
-    doc_ver = parse_document_version(text)
-    if not doc_ver:
-        print("No DocumentVersion found")
-        return
-
-    # Get current public version from version.json in public repo
+    # get current version
     file_info = update.get_file_info()
-    pub_data = json.loads(
-        __import__("base64").b64decode(file_info["content"]).decode()
-    )
-    old_ver = pub_data.get("cn_beta")
+    pub_data = json.loads(base64.b64decode(file_info["content"]).decode())
 
-    if doc_ver != old_ver:
-        print(f"New cn_beta DocumentVersion {doc_ver} (old {old_ver})")
-        update.update_file(doc_ver)
+    changed = {}
+
+    for key, cfg in CONFIGS.items():
+        old_doc_ver = pub_data.get(key)
+        if not old_doc_ver:
+            print(f"Skipping {key}: no version in version.json")
+            continue
+
+        # normalize x.y.z -> x.y.0
+        parts = old_doc_ver.split(".")
+        base_ver = f"{parts[0]}.{parts[1]}.0"
+
+        text = fetch_config(cfg["cdn"], cfg["appId"], base_ver, cfg["platform"])
+        if not text:
+            bumped = bump_version(base_ver, cfg["cdn"], cfg["appId"], cfg["platform"])
+            if not bumped:
+                print(f"{key}: no new version found.")
+                continue
+            text = fetch_config(cfg["cdn"], cfg["appId"], bumped, cfg["platform"])
+
+        doc_ver = parse_document_version(text)
+        if not doc_ver:
+            print(f"{key}: DocumentVersion not found.")
+            continue
+
+        if doc_ver != old_doc_ver:
+            print(f"{key}: new DocumentVersion {doc_ver} (old {old_doc_ver}).")
+            changed[key] = doc_ver
+        else:
+            print(f"{key}: No change.")
+
+    # update changed fields
+    if changed:
+        pub_data.update(changed)
+        for k, v in changed.items():
+            update.update_file(v, field=k)
     else:
-        print("No change")
+        print("no updates detected.")
+
 
 if __name__ == "__main__":
     main()

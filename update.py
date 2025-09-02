@@ -29,7 +29,7 @@ def update_file(new_cn_beta):
     data["cn_beta"] = new_cn_beta
     new_content = json.dumps(data, indent=2, ensure_ascii=False)
 
-    # Encode back to base64
+    # encode back to base64
     encoded = base64.b64encode(new_content.encode()).decode()
 
     url = f"https://api.github.com/repos/{OWNER}/{REPO}/contents/{FILE_PATH}"
