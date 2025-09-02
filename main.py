@@ -87,13 +87,21 @@ def main():
         parts = old_doc_ver.split(".")
         base_ver = f"{parts[0]}.{parts[1]}.0"
 
-        text = fetch_config(cfg["cdn"], cfg["appId"], base_ver, cfg["platform"])
-        if not text:
-            bumped = bump_version(base_ver, cfg["cdn"], cfg["appId"], cfg["platform"])
-            if not bumped:
-                print(f"{key}: no new version found.")
-                continue
+
+        text = None
+        bumped = bump_version(base_ver, cfg["cdn"], cfg["appId"], cfg["platform"])
+        if bumped:
             text = fetch_config(cfg["cdn"], cfg["appId"], bumped, cfg["platform"])
+            if text:
+                print(f"{key}: bumped version found ({bumped})")
+        if not text:
+            text = fetch_config(cfg["cdn"], cfg["appId"], base_ver, cfg["platform"])
+            if text:
+                print(f"{key}: using current base version ({base_ver})")
+
+        if not text:
+            print(f"{key}: no version data found.")
+            continue
 
         doc_ver = parse_document_version(text)
         if not doc_ver:
