@@ -5,7 +5,7 @@ import requests
 
 OWNER = "myssal"
 REPO = "PGR_Data"
-BRANCH = "main"
+BRANCH = "master"
 FILE_PATH = "version.json"
 GH_TOKEN = os.getenv("GH_TOKEN")
 
