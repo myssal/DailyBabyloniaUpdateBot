@@ -87,32 +87,44 @@ def main():
         parts = old_doc_ver.split(".")
         base_ver = f"{parts[0]}.{parts[1]}.0"
 
-
         text = None
+        doc_ver = None
+
+        # bump version first
         bumped = bump_version(base_ver, cfg["cdn"], cfg["appId"], cfg["platform"])
         if bumped:
             text = fetch_config(cfg["cdn"], cfg["appId"], bumped, cfg["platform"])
             if text:
-                print(f"{key}: bumped version found ({bumped})")
+                doc_ver = parse_document_version(text)
+                print(f"{key}: bumped version found ({bumped}), DocumentVersion={doc_ver}")
+
+                # if doc_ver ends with .0, likely to be no data has been updated, just use base version.
+                if doc_ver and doc_ver.endswith(".0"):
+                    print(
+                        f"{key}: bumped DocumentVersion {doc_ver} ignored (base only). Fallback to base version {base_ver}.")
+                    text = None
+                    doc_ver = None
+
+        # fallback to base version
         if not text:
             text = fetch_config(cfg["cdn"], cfg["appId"], base_ver, cfg["platform"])
             if text:
-                print(f"{key}: using current base version ({base_ver})")
+                doc_ver = parse_document_version(text)
+                print(f"{key}: using current base version ({base_ver}), DocumentVersion={doc_ver}")
 
-        if not text:
-            print(f"{key}: no version data found.")
+        if not text or not doc_ver:
+            print(f"{key}: no valid DocumentVersion found.")
             continue
 
-        doc_ver = parse_document_version(text)
-        if not doc_ver:
-            print(f"{key}: DocumentVersion not found.")
+        if doc_ver.endswith(".0"):
+            print(f"{key}: DocumentVersion {doc_ver} ignored (base version only).")
             continue
 
         if doc_ver != old_doc_ver:
             print(f"{key}: new DocumentVersion {doc_ver} (old {old_doc_ver}).")
             changed[key] = doc_ver
         else:
-            print(f"{key}: No change.")
+            print(f"{key}: no change.")
 
     # update changed fields
     if changed:
