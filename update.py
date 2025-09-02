@@ -18,11 +18,9 @@ def get_file_info():
 def update_file(new_cn_beta):
     file_info = get_file_info()
 
-    # Decode existing version.json
     content = base64.b64decode(file_info["content"]).decode()
     data = json.loads(content)
 
-    # Update cn_beta
     old_ver = data.get("cn_beta")
     if old_ver == new_cn_beta:
         print("No change needed")
@@ -37,7 +35,7 @@ def update_file(new_cn_beta):
     url = f"https://api.github.com/repos/{OWNER}/{REPO}/contents/{FILE_PATH}"
     headers = {"Authorization": f"token {os.getenv('GH_TOKEN')}"}
     payload = {
-        "message": f"Update cn_beta: {new_cn_beta}",
+        "message": f"feat: cn_beta version  [{old_ver}] → [{new_cn_beta}]",
         "content": encoded,
         "sha": file_info["sha"],
         "branch": BRANCH,
