@@ -19,19 +19,27 @@ def get_file_info():
     return resp.json()
 
 
-def update_file(new_ver, field="cn_beta"):
-    # update specific field in version.json
+def update_multiple(changes: dict):
     file_info = get_file_info()
     content = base64.b64decode(file_info["content"]).decode()
     data = json.loads(content)
 
-    data[field] = new_ver
+    commit_lines = []
+    for field, new_ver in changes.items():
+        old_ver = data.get(field, "")
+        if old_ver != new_ver:
+            data[field] = new_ver
+            commit_lines.append(f"- {field} [{old_ver}] -> [{new_ver}]")
+
+    if not commit_lines:
+        print("No changes to commit.")
+        return
 
     new_content = json.dumps(data, indent=2, ensure_ascii=False)
     encoded = base64.b64encode(new_content.encode()).decode()
 
     payload = {
-        "message": f"Update {field}: {new_ver}",
+        "message": "feat: version changed.",
         "content": encoded,
         "sha": file_info["sha"],
         "branch": BRANCH,
@@ -44,4 +52,4 @@ def update_file(new_ver, field="cn_beta"):
     headers = {"Authorization": f"token {GH_TOKEN}"}
     resp = requests.put(API_URL, headers=headers, json=payload)
     resp.raise_for_status()
-    print(f"{field} updated to {new_ver}")
+    print("version updated:\n" + "\n".join(commit_lines))

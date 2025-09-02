@@ -108,9 +108,7 @@ def main():
 
     # update changed fields
     if changed:
-        pub_data.update(changed)
-        for k, v in changed.items():
-            update.update_file(v, field=k)
+        update.update_multiple(changed)
     else:
         print("no updates detected.")
 
