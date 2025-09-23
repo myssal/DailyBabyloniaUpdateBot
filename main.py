@@ -5,16 +5,50 @@ import update
 
 # cdn config
 CONFIGS = {
-    "cn_beta": {
-        "cdn": "http://dev-zspns-volccdn.kurogame.com/dev",
-        "appId": "com.kurogame.haru.pioneer",
+    "en": {
+        "cdn": "http://prod-encdn-volcdn.kurogame.net/prod",
+        "appId": "com.kurogame.punishing.grayraven.en",
         "platform": "android",
     },
-    "cn_beta(pc)": {
-        "cdn": "http://dev-zspns-volccdn.kurogame.com/dev",
-        "appId": "com.kurogame.haru.pioneer",
+    "en(pc)": {
+        "cdn": "http://prod-encdn-volcdn.kurogame.net/prod",
+        "appId": "com.kurogame.punishing.grayraven.en.pc",
         "platform": "standalone",
     },
+
+    "kr": {
+        "cdn": "http://prod-krcdn-volcdn.kurogame.net/prod",
+        "appId": "com.herogame.punishing.grayraven.kr",
+        "platform": "android",
+    },
+    "kr(pc)": {
+        "cdn": "http://prod-krcdn-volcdn.kurogame.net/prod",
+        "appId": "com.herogame.pc.punishing.grayraven.kr",
+        "platform": "standalone",
+    },
+
+    "jp": {
+        "cdn": "http://prod-jpcdn-volcdn.kurogame.net/prod",
+        "appId": "com.herogame.gplay.punishing.grayraven.jp",
+        "platform": "android",
+    },
+    "jp(pc)": {
+        "cdn": "http://prod-jpcdn-volcdn.kurogame.net/prod",
+        "appId": "com.herogame.pc.punishing.grayraven.jp",
+        "platform": "standalone",
+    },
+
+    "tw": {
+        "cdn": "http://prod-twcdn-volcdn.kurogame.net/prod",
+        "appId": "com.herogame.gplay.punishing.grayraven.tw",
+        "platform": "android",
+    },
+    "tw(pc)": {
+        "cdn": "http://prod-twcdn-volcdn.kurogame.net/prod",
+        "appId": "com.herogame.pc.punishing.grayraven.tw",
+        "platform": "standalone",
+    },
+
     "cn": {
         "cdn": "http://prod-zspns-volccdn.kurogame.com/prod",
         "appId": "com.kurogame.haru.kuro",
@@ -25,7 +59,19 @@ CONFIGS = {
         "appId": "com.kurogame.haru.kuro",
         "platform": "standalone",
     },
+
+    "cn_beta": {
+        "cdn": "http://dev-zspns-volccdn.kurogame.com/dev",
+        "appId": "com.kurogame.haru.pioneer",
+        "platform": "android",
+    },
+    "cn_beta(pc)": {
+        "cdn": "http://dev-zspns-volccdn.kurogame.com/dev",
+        "appId": "com.kurogame.haru.pioneer",
+        "platform": "standalone",
+    },
 }
+
 
 
 def build_url(cdn, appId, version, platform):
