@@ -5,67 +5,67 @@ import update
 
 # cdn config
 CONFIGS = {
-    "en": {
+    "EN": {
         "cdn": "http://prod-encdn-volcdn.kurogame.net/prod",
         "appId": "com.kurogame.punishing.grayraven.en",
         "platform": "android",
     },
-    "en(pc)": {
+    "EN_PC": {
         "cdn": "http://prod-encdn-volcdn.kurogame.net/prod",
         "appId": "com.kurogame.punishing.grayraven.en.pc",
         "platform": "standalone",
     },
 
-    "kr": {
+    "KR": {
         "cdn": "http://prod-krcdn-volcdn.kurogame.net/prod",
         "appId": "com.herogame.punishing.grayraven.kr",
         "platform": "android",
     },
-    "kr(pc)": {
+    "KR_PC": {
         "cdn": "http://prod-krcdn-volcdn.kurogame.net/prod",
         "appId": "com.herogame.pc.punishing.grayraven.kr",
         "platform": "standalone",
     },
 
-    "jp": {
+    "JP": {
         "cdn": "http://prod-jpcdn-volcdn.kurogame.net/prod",
         "appId": "com.herogame.gplay.punishing.grayraven.jp",
         "platform": "android",
     },
-    "jp(pc)": {
+    "JP_PC": {
         "cdn": "http://prod-jpcdn-volcdn.kurogame.net/prod",
         "appId": "com.herogame.pc.punishing.grayraven.jp",
         "platform": "standalone",
     },
 
-    "tw": {
+    "TW": {
         "cdn": "http://prod-twcdn-volcdn.kurogame.net/prod",
         "appId": "com.herogame.gplay.punishing.grayraven.tw",
         "platform": "android",
     },
-    "tw(pc)": {
+    "TW_PC": {
         "cdn": "http://prod-twcdn-volcdn.kurogame.net/prod",
         "appId": "com.herogame.pc.punishing.grayraven.tw",
         "platform": "standalone",
     },
 
-    "cn": {
+    "CN": {
         "cdn": "http://prod-zspns-volccdn.kurogame.com/prod",
         "appId": "com.kurogame.haru.kuro",
         "platform": "android",
     },
-    "cn(pc)": {
+    "CN_PC": {
         "cdn": "http://prod-zspns-volccdn.kurogame.com/prod",
         "appId": "com.kurogame.haru.kuro",
         "platform": "standalone",
     },
 
-    "cn_beta": {
+    "CN_BETA": {
         "cdn": "http://dev-zspns-volccdn.kurogame.com/dev",
         "appId": "com.kurogame.haru.pioneer",
         "platform": "android",
     },
-    "cn_beta(pc)": {
+    "CN_PC_BETA": {
         "cdn": "http://dev-zspns-volccdn.kurogame.com/dev",
         "appId": "com.kurogame.haru.pioneer",
         "platform": "standalone",
@@ -112,6 +112,14 @@ def bump_version(base_ver, cdn, appId, platform):
         return new_x0
     if fetch_config(cdn, appId, new_x1, platform):
         return new_x1
+
+    # some servers like tw, kr, jp still haven't caught up with cn progress.
+    # this will check one more version to ensure bot get correct version.
+    # 3.6 = crepuscule, 3.8 = aegis
+    if (x,y) == (3,6):
+        new_y2 = f"{x}.{y + 2}.0"
+        if fetch_config(cdn, appId, new_y2, platform):
+            return new_y2
 
     return None
 
