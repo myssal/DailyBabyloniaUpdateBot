@@ -62,12 +62,12 @@ CONFIGS = {
 
     "CN_BETA": {
         "cdn": "http://pre-zspns-volccdn.kurogame.com/pre",
-        "appId": "com.kurogame.haru.pioneer",
+        "appId": "0B6CFEBaFE9OyvUc/com.kurogame.haru.pioneer",
         "platform": "android",
     },
     "CN_PC_BETA": {
         "cdn": "http://pre-zspns-volccdn.kurogame.com/pre",
-        "appId": "com.kurogame.haru.pioneer",
+        "appId": "0B6CFEBaFE9OyvUc/com.kurogame.haru.pioneer",
         "platform": "standalone",
     },
 }
