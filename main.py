@@ -7,75 +7,87 @@ import update
 CONFIGS = {
     "EN": {
         "cdn": "http://prod-encdn-volcdn.kurogame.net/prod",
-        "appId": "com.kurogame.punishing.grayraven.en",
+        "token": "",
+        "appId": "/com.kurogame.punishing.grayraven.en",
         "platform": "android",
     },
     "EN_PC": {
         "cdn": "http://prod-encdn-volcdn.kurogame.net/prod",
-        "appId": "com.kurogame.punishing.grayraven.en.pc",
+        "token": "",
+        "appId": "/com.kurogame.punishing.grayraven.en.pc",
         "platform": "standalone",
     },
 
     "KR": {
         "cdn": "http://prod-krcdn-volcdn.kurogame.net/prod",
-        "appId": "com.herogame.punishing.grayraven.kr",
+        "token": "",
+        "appId": "/com.herogame.punishing.grayraven.kr",
         "platform": "android",
     },
     "KR_PC": {
         "cdn": "http://prod-krcdn-volcdn.kurogame.net/prod",
-        "appId": "com.herogame.pc.punishing.grayraven.kr",
+        "token": "",
+        "appId": "/com.herogame.pc.punishing.grayraven.kr",
         "platform": "standalone",
     },
 
     "JP": {
         "cdn": "http://prod-jpcdn-volcdn.kurogame.net/prod",
-        "appId": "com.herogame.gplay.punishing.grayraven.jp",
+        "token": "",
+        "appId": "/com.herogame.gplay.punishing.grayraven.jp",
         "platform": "android",
     },
     "JP_PC": {
         "cdn": "http://prod-jpcdn-volcdn.kurogame.net/prod",
-        "appId": "com.herogame.pc.punishing.grayraven.jp",
+        "token": "",
+        "appId": "/com.herogame.pc.punishing.grayraven.jp",
         "platform": "standalone",
     },
 
     "TW": {
         "cdn": "http://prod-twcdn-volcdn.kurogame.net/prod",
-        "appId": "com.herogame.gplay.punishing.grayraven.tw",
+        "token": "",
+        "appId": "/com.herogame.gplay.punishing.grayraven.tw",
         "platform": "android",
     },
     "TW_PC": {
         "cdn": "http://prod-twcdn-volcdn.kurogame.net/prod",
-        "appId": "com.herogame.pc.punishing.grayraven.tw",
+        "token": "",
+        "appId": "/com.herogame.pc.punishing.grayraven.tw",
         "platform": "standalone",
     },
 
     "CN": {
         "cdn": "http://prod-zspns-volccdn.kurogame.com/prod",
-        "appId": "com.kurogame.haru.kuro",
+        "token": "EGE2QCJHK7MoHFBn",
+        "appId": "/com.kurogame.haru.kuro",
         "platform": "android",
     },
     "CN_PC": {
         "cdn": "http://prod-zspns-volccdn.kurogame.com/prod",
-        "appId": "com.kurogame.haru.kuro",
+        "token": "EGE2QCJHK7MoHFBn",
+        "appId": "/com.kurogame.haru.kuro",
         "platform": "standalone",
     },
 
     "CN_BETA": {
         "cdn": "http://pre-zspns-volccdn.kurogame.com/pre",
-        "appId": "0B6CFEBaFE9OyvUc/com.kurogame.haru.pioneer",
+        "token": "0B6CFEBaFE9OyvUc",
+        "appId": "/com.kurogame.haru.pioneer",
         "platform": "android",
     },
     "CN_PC_BETA": {
         "cdn": "http://pre-zspns-volccdn.kurogame.com/pre",
-        "appId": "0B6CFEBaFE9OyvUc/com.kurogame.haru.pioneer",
+        "token": "0B6CFEBaFE9OyvUc",
+        "appId": "/com.kurogame.haru.pioneer",
         "platform": "standalone",
     },
 }
 
 
 
-def build_url(cdn, appId, version, platform):
-    return f"{cdn}/client/config/{appId}/{version}/{platform}/config.tab"
+def build_url(cdn, token, appId, version, platform):
+    return f"{cdn}/client/config/{token}{appId}/{version}/{platform}/config.tab"
 
 
 def fetch_config(cdn, appId, version, platform):
