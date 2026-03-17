@@ -7,13 +7,13 @@ import update
 CONFIGS = {
     "EN": {
         "cdn": "http://prod-encdn-volcdn.kurogame.net/prod",
-        "token": "",
+        "token": "VCAw4wx7IseFdBto",
         "appId": "/com.kurogame.punishing.grayraven.en",
         "platform": "android",
     },
     "EN_PC": {
         "cdn": "http://prod-encdn-volcdn.kurogame.net/prod",
-        "token": "",
+        "token": "VCAw4wx7IseFdBto",
         "appId": "/com.kurogame.punishing.grayraven.en.pc",
         "platform": "standalone",
     },
