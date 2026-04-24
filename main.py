@@ -7,13 +7,13 @@ import update
 CONFIGS = {
     "EN": {
         "cdn": "http://prod-encdn-volcdn.kurogame.net/prod",
-        "token": "VCAw4wx7IseFdBto",
+        "token": "R0bYNv1p0RHLXEEe",
         "appId": "/com.kurogame.punishing.grayraven.en",
         "platform": "android",
     },
     "EN_PC": {
         "cdn": "http://prod-encdn-volcdn.kurogame.net/prod",
-        "token": "VCAw4wx7IseFdBto",
+        "token": "R0bYNv1p0RHLXEEe",
         "appId": "/com.kurogame.punishing.grayraven.en.pc",
         "platform": "standalone",
     },
@@ -59,13 +59,13 @@ CONFIGS = {
 
     "CN": {
         "cdn": "http://prod-zspns-volccdn.kurogame.com/prod",
-        "token": "EGE2QCJHK7MoHFBn",
+        "token": "Tk06VWjajcajO0Tz",
         "appId": "/com.kurogame.haru.kuro",
         "platform": "android",
     },
     "CN_PC": {
         "cdn": "http://prod-zspns-volccdn.kurogame.com/prod",
-        "token": "EGE2QCJHK7MoHFBn",
+        "token": "Tk06VWjajcajO0Tz",
         "appId": "/com.kurogame.haru.kuro",
         "platform": "standalone",
     },
