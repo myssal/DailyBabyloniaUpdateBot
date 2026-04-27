@@ -14,7 +14,7 @@ CONFIGS = {
     "EN_PC": {
         "cdn": "http://prod-encdn-volcdn.kurogame.net/prod",
         "token": "R0bYNv1p0RHLXEEe",
-        "appId": "/com.kurogame.punishing.grayraven.en.pc",
+        "appId": "/com.kurogame.punishing.grayraven.en",
         "platform": "standalone",
     },
 
